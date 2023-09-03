@@ -1,13 +1,16 @@
 import { TaskCard } from "@/components/TaskCard"
 import { prisma } from "@/libs/prisma"
+import { revalidatePath } from "next/cache"
 
 async function loadTasks() {
   let tasks = await prisma.task.findMany()
+  revalidatePath('/tasks')
   return tasks
 }
 
 export default async function Home() {
   const tasks = await loadTasks()
+
 
   return (
     <main className="container mx-auto">
